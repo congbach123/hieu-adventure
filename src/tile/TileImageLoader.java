@@ -2,19 +2,25 @@ package tile;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.InputStream;
+
+import tile.TileManager;
 
 public class TileImageLoader {
-    public static void getTileImage(){
+
+
+    public static void getTileImage(Tile[] tile){
         try{
-
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/01_house_1.png"));
-
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/02_house_2.png"));
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/03_chest_1.png"));
+            for (int i = 0; i <= 64; i++) {
+                tile[i] = new Tile();
+                String imagePath = "/tiles/sprite_" + String.format("%02d", i) + ".png";
+                InputStream stream = TileImageLoader.class.getResourceAsStream(imagePath);
+                if (stream != null) {
+                    tile[i].image = ImageIO.read(stream);
+                } else {
+                    System.out.println("Image not found: " + imagePath);
+                }
+            }
 
         }
         catch (IOException e){
