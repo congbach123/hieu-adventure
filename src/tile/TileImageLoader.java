@@ -9,11 +9,11 @@ import tile.TileManager;
 public class TileImageLoader {
 
 
-    public static void getTileImage(Tile[] tile){
+    public static void getTileImage(Tile[] tile, String folderPath){
         try{
-            for (int i = 0; i <= 64; i++) {
+            for (int i = 0; i < tile.length; i++) {
                 tile[i] = new Tile();
-                String imagePath = "/tiles/sprite_" + String.format("%02d", i) + ".png";
+                String imagePath = folderPath + "/tile" + String.format("%03d", i) + ".png";
                 InputStream stream = TileImageLoader.class.getResourceAsStream(imagePath);
                 if (stream != null) {
                     tile[i].image = ImageIO.read(stream);

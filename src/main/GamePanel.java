@@ -25,13 +25,15 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
+    int[][] mapTileNumWall = tileM.getMapTileNumWall();
+    int[][] mapTileNumWall2 = tileM.getMapTileNumWall2();
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public Player player = new Player(this, keyH);
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.white);
+        this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
@@ -111,7 +113,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2);
+        tileM.draw(g2, tileM.getMapTileNumInterior(), tileM.getTileForInterior());
+        tileM.draw(g2, tileM.getMapTileNumWall2(), tileM.getTileForWall2());
+        tileM.draw(g2, tileM.getMapTileNumWall(), tileM.getTileForWall());
+
 
         player.draw(g2);
         g2.dispose();
