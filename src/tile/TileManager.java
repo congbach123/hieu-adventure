@@ -8,14 +8,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import tile.TileImageLoader;
 
 public class TileManager {
 
     GamePanel gp;
     public Tile[] tileForWall2, tileForWall, tileForInterior;
-    int mapTileNumWall[][], mapTileNumWall2[][], mapTileNumInterior[][];
-
+    public int mapTileNumWall[][], mapTileNumWall2[][], mapTileNumInterior[][];
+    ArrayList<String> fileNames = new ArrayList<>();
+    ArrayList<String> collisionStatus = new ArrayList<>();
     public Tile[] getTileForWall() {
         return tileForWall;
     }
@@ -41,18 +44,41 @@ public class TileManager {
     public TileManager(GamePanel gp){
         this.gp = gp;
 
+        // READ TILE DATA FILE
+        InputStream is = getClass().getResourceAsStream("/maps/tiledata.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        // GETTING TILE NAMES AND COLLISION
+        String line;
+
+        try{
+            while((line = br.readLine()) != null){
+                fileNames.add(line);
+                collisionStatus.add(br.readLine());
+            }
+            br.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+
         tileForWall = new Tile[391]; // number of tile, can be changed
         tileForWall2 = new Tile[391];
         tileForInterior = new Tile[391];
+
+        TileImageLoader.getTileImage(tileForInterior, "/tiles/wall2");
+        TileImageLoader.getTileImage(tileForWall2, "/tiles/wall2");
+        TileImageLoader.getTileImage(tileForWall, "/tiles/wall");
+
         mapTileNumWall = new int[gp.maxWorldCol][gp.maxWorldRow];
         mapTileNumWall2 = new int[gp.maxWorldCol][gp.maxWorldRow];// maxscreencol row
         mapTileNumInterior = new int[gp.maxWorldCol][gp.maxWorldRow];
 
-        TileImageLoader.getTileImage(tileForInterior, "/tiles/wall2");
+
         loadMap("/maps/map2_interior.txt", mapTileNumInterior);
-        TileImageLoader.getTileImage(tileForWall2, "/tiles/wall2");
+
         loadMap("/maps/map2_wall2.txt", mapTileNumWall2);
-        TileImageLoader.getTileImage(tileForWall, "/tiles/wall");
+
         loadMap("/maps/map2_wall.txt", mapTileNumWall);
 
 
