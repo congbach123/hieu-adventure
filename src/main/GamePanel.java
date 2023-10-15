@@ -25,9 +25,6 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
-    int[][] mapTileNumWall = tileM.getMapTileNumWall();
-    int[][] mapTileNumWall2 = tileM.getMapTileNumWall2();
-
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -114,9 +111,9 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2, tileM.getMapTileNumInterior(), tileM.getTileForInterior());
-        tileM.draw(g2, tileM.getMapTileNumWall2(), tileM.getTileForWall2());
-        tileM.draw(g2, tileM.getMapTileNumWall(), tileM.getTileForWall());
+        tileM.draw(g2, 0, tileM.tile[0]);
+        tileM.draw(g2, 1, tileM.tile[1]);
+        tileM.draw(g2, 2, tileM.tile[2]);
 
 
         player.draw(g2);

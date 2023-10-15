@@ -11,10 +11,8 @@ import java.io.IOException;
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
-
     public final int screenX;
     public final int screenY;
-
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -24,13 +22,12 @@ public class Player extends Entity{
 
         solidArea = new Rectangle(21,30, 24, 31 );
 
-
         setDefaultValues();
         getPlayerImage();
     }
     public void setDefaultValues(){
         worldX = gp.tileSize * 10;
-        worldY = gp.tileSize * 10;
+        worldY = gp.tileSize * 20;
         speed = 4;
         direction = "down";
     }

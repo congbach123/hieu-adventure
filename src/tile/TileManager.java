@@ -4,10 +4,7 @@ import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 import tile.TileImageLoader;
@@ -15,10 +12,11 @@ import tile.TileImageLoader;
 public class TileManager {
 
     GamePanel gp;
-    public Tile[] tileForWall2, tileForWall, tileForInterior;
-    public int mapTileNumWall[][], mapTileNumWall2[][], mapTileNumInterior[][];
+    public Tile[][] tile;
+    public int[][][] mapTileNum;
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
+    /*
     public Tile[] getTileForWall() {
         return tileForWall;
     }
@@ -29,6 +27,7 @@ public class TileManager {
     public Tile[] getTileForInterior() {
         return tileForInterior;
     }
+
     public int[][] getMapTileNumWall() {
         return mapTileNumWall;
     }
@@ -40,51 +39,87 @@ public class TileManager {
     public int[][] getMapTileNumInterior() {
         return mapTileNumInterior;
     }
+    */
 
     public TileManager(GamePanel gp){
         this.gp = gp;
 
         // READ TILE DATA FILE
-        InputStream is = getClass().getResourceAsStream("/maps/tiledata.txt");
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        // GETTING TILE NAMES AND COLLISION
-        String line;
+        tile = new Tile[3][1400];
 
-        try{
-            while((line = br.readLine()) != null){
-                fileNames.add(line);
-                collisionStatus.add(br.readLine());
+
+        TileImageLoader.getTileImage(tile[0], "/tiles/wall2");
+        TileImageLoader.getTileImage(tile[1], "/tiles/wall2");
+        TileImageLoader.getTileImage(tile[2], "/tiles/wall");
+        MapDataReader.readMapData(tile[0], "/tiles/wall2/collision.txt");
+        MapDataReader.readMapData(tile[1], "/tiles/wall2/collision.txt");
+        MapDataReader.readMapData(tile[2], "/tiles/wall/collision.txt");
+
+
+        /*
+        getTileImage(tile[0], "/tiles/wall2");
+        getTileImage(tile[1], "/tiles/wall2");
+        getTileImage(tile[2], "/tiles/wall");
+        readMapData(tile[0], "/tiles/wall2/collision.txt");
+        readMapData(tile[1], "/tiles/wall2/collision.txt");
+        readMapData(tile[2], "/tiles/wall/collision.txt");
+        */
+
+        mapTileNum = new int[3][gp.maxWorldCol][gp.maxWorldRow];
+
+        loadMap("/maps/map2_interior.txt", mapTileNum[0]);
+        loadMap("/maps/map2_wall2.txt", mapTileNum[1]);
+        loadMap("/maps/map2_wall.txt", mapTileNum[2]);
+    }
+/*
+    public void readMapData(String filePath) {
+        try {
+            InputStream inputStream = MapDataReader.class.getResourceAsStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                int index = Integer.parseInt(line);
+                tile[index] = new Tile();
+                // Check if index is within the range of tiles array
+                tile[index].collision = true;
+
             }
-            br.close();
-        } catch (IOException e){
+
+            reader.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        tileForWall = new Tile[391]; // number of tile, can be changed
-        tileForWall2 = new Tile[391];
-        tileForInterior = new Tile[391];
-
-        TileImageLoader.getTileImage(tileForInterior, "/tiles/wall2");
-        TileImageLoader.getTileImage(tileForWall2, "/tiles/wall2");
-        TileImageLoader.getTileImage(tileForWall, "/tiles/wall");
-
-        mapTileNumWall = new int[gp.maxWorldCol][gp.maxWorldRow];
-        mapTileNumWall2 = new int[gp.maxWorldCol][gp.maxWorldRow];// maxscreencol row
-        mapTileNumInterior = new int[gp.maxWorldCol][gp.maxWorldRow];
-
-
-        loadMap("/maps/map2_interior.txt", mapTileNumInterior);
-
-        loadMap("/maps/map2_wall2.txt", mapTileNumWall2);
-
-        loadMap("/maps/map2_wall.txt", mapTileNumWall);
-
-
     }
 
+    public void getTileImage(Tile[] tile, String folderPath){
 
+        try {
+            File folder = new File(folderPath);
+
+            // Check if the path points to a directory
+            File[] files = new File[0];
+            if (folder.isDirectory()) {
+                files = folder.listFiles();
+            }
+            for (int i = 0; i < files.length; i++) {
+                tile[i] = new Tile();
+                String imagePath = folderPath + "/tile" + String.format("%03d", i) + ".png";
+                InputStream stream = TileImageLoader.class.getResourceAsStream(imagePath);
+                if (stream != null) {
+                    tile[i].image = ImageIO.read(stream);
+                } else {
+                    System.out.println("Image not found: " + imagePath);
+                }
+            }
+        }
+
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+*/
 
     public void loadMap(String filePath, int[][] mapTileNum){
         try{
@@ -118,37 +153,25 @@ public class TileManager {
 
         }
     }
-    public void draw(Graphics2D g2, int [][] mapTileNum, Tile[] tile){
+    public void draw(Graphics2D g2, int layerIndex, Tile[] tile){
+        for (int worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
+            for (int worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
+                int tileNum = mapTileNum[layerIndex][worldCol][worldRow];
 
-        int worldCol = 0;
-        int worldRow = 0;
+                int worldX = worldCol * gp.tileSize;
+                int worldY = worldRow * gp.tileSize;
+                int screenX = worldX - gp.player.worldX + gp.player.screenX;
+                int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-
-            int tileNum = mapTileNum[worldCol][worldRow];
-
-
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-            if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize< gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
-                if(mapTileNum[worldCol][worldRow] != -1)
-
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-            }
-            worldCol++;
-
-
-            if(worldCol == gp.maxWorldCol){
-                worldCol = 0;
-
-                worldRow++;
-
+                if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                        worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                        worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                        worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                    if (tileNum != -1) {
+                        System.out.println("tileNum: " + tileNum);
+                        g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                    }
+                }
             }
         }
     }
