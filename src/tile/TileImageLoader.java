@@ -13,11 +13,11 @@ public class TileImageLoader {
     public static void getTileImage(Tile[] tile, String folderPath){
 
         try {
-            System.out.println("/res"+folderPath);
+          //  System.out.println("/res"+folderPath);
             File f = new File("res"+ folderPath);
             String[] files = f.list();
 
-            System.out.println(files.length);
+           // System.out.println(files.length);
             for (int i = 0; i < files.length-1; i++) {
                 tile[i] = new Tile();
                 String imagePath = folderPath + "/tile" + String.format("%03d", i) + ".png";

@@ -32,11 +32,12 @@ public class CollisionChecker {
                         if(gp.tileM.tile[i][tileNum1].collision == true ||
                                 gp.tileM.tile[i][tileNum2].collision == true){
                             entity.collisionOn = true;
+
                         }
                     }
 
                 }
-
+                break;
 
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed)/gp.tileSize;

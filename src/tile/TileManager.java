@@ -168,7 +168,7 @@ public class TileManager {
                         worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                         worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                     if (tileNum != -1) {
-                        System.out.println("tileNum: " + tileNum);
+                      //  System.out.println("tileNum: " + tileNum);
                         g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
                     }
                 }
