@@ -1,11 +1,13 @@
 package main;
 
 import entity.Player;
+import object.OBJ_Key;
 import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 32;
@@ -31,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this, keyH);
-    public SuperObject obj [] = new SuperObject[10];
+    public ArrayList<OBJ_Key> keys = new ArrayList<>();
     //Display <=10 objects in the game
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -41,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
     }
     public void setupGame(){
-        aSetter.setObject();
+        aSetter.setObjectRandom();
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -122,9 +124,9 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2, 2, tileM.tile[2]);
 
         //object
-        for (int i=0;i<obj.length;i++){
-            if (obj[i]!=null){ //Avoid nullpointer error
-                obj[i].draw(g2,this);
+        for (OBJ_Key key: keys){
+            if (key!=null){ //Avoid nullpointer error
+                key.draw(g2,this);
             }
         }
 

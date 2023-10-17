@@ -8,9 +8,16 @@ import java.io.InputStream;
 import tile.TileManager;
 
 public class TileImageLoader {
+    public static int getFileLength(Tile[] tile, String folderPath){
+        File f = new File("res"+ folderPath);
+        String[] files = f.list();
+
+        return files.length;
+    }
 
 
     public static void getTileImage(Tile[] tile, String folderPath){
+
 
         try {
           //  System.out.println("/res"+folderPath);

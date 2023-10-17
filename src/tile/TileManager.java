@@ -11,6 +11,7 @@ import tile.TileImageLoader;
 
 public class TileManager {
 
+    final public int layerNum = 3;
     GamePanel gp;
     public Tile[][] tile;
     public int[][][] mapTileNum;
@@ -46,7 +47,7 @@ public class TileManager {
 
         // READ TILE DATA FILE
 
-        tile = new Tile[3][1400];
+        tile = new Tile[layerNum][1400];
 
 
         TileImageLoader.getTileImage(tile[0], "/tiles/wall2");
@@ -66,60 +67,12 @@ public class TileManager {
         readMapData(tile[2], "/tiles/wall/collision.txt");
         */
 
-        mapTileNum = new int[3][gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[layerNum][gp.maxWorldCol][gp.maxWorldRow];
 
         loadMap("/maps/map2_interior.txt", mapTileNum[0]);
         loadMap("/maps/map2_wall2.txt", mapTileNum[1]);
         loadMap("/maps/map2_wall.txt", mapTileNum[2]);
     }
-/*
-    public void readMapData(String filePath) {
-        try {
-            InputStream inputStream = MapDataReader.class.getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                int index = Integer.parseInt(line);
-                tile[index] = new Tile();
-                // Check if index is within the range of tiles array
-                tile[index].collision = true;
-
-            }
-
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getTileImage(Tile[] tile, String folderPath){
-
-        try {
-            File folder = new File(folderPath);
-
-            // Check if the path points to a directory
-            File[] files = new File[0];
-            if (folder.isDirectory()) {
-                files = folder.listFiles();
-            }
-            for (int i = 0; i < files.length; i++) {
-                tile[i] = new Tile();
-                String imagePath = folderPath + "/tile" + String.format("%03d", i) + ".png";
-                InputStream stream = TileImageLoader.class.getResourceAsStream(imagePath);
-                if (stream != null) {
-                    tile[i].image = ImageIO.read(stream);
-                } else {
-                    System.out.println("Image not found: " + imagePath);
-                }
-            }
-        }
-
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-*/
 
     public void loadMap(String filePath, int[][] mapTileNum){
         try{

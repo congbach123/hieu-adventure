@@ -25,4 +25,8 @@ public class SuperObject {
 
         }
     }
+
+    public double distanceTo(SuperObject obj) {
+        return Math.sqrt(Math.pow(this.worldX - obj.worldX, 2) + Math.pow(this.worldY - obj.worldY, 2));
+    }
 }
