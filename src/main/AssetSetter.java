@@ -64,7 +64,7 @@ public class AssetSetter {
                 }
             }
 
-            if (validKey) {
+            if (validKey && isValidKeyPlacement(newKey)) {
                 gp.keys.add(newKey);
                 System.out.println("Generated key at (" + x + ", " + y + ")");
             } else {
@@ -74,13 +74,18 @@ public class AssetSetter {
         }
     }
 
-    public boolean checkValid(OBJ_Key newKey){
+    public boolean isValidKeyPlacement(OBJ_Key newKey){
         for(int i=0;i< gp.tileM.layerNum; i++){
-            for(int j=0; gp.tileM.tile[i][j] != null; j++){
-                if(gp.tileM.tile[i][j].collision == true){
-                    
+
+            int tileNum = gp.tileM.mapTileNum[i][newKey.worldX/gp.tileSize][newKey.worldY/gp.tileSize];
+            // divine by tilesize to get x,y or col and row
+            if(tileNum != -1){
+                if(gp.tileM.tile[i][tileNum].collision == true){
+                    return false;
                 }
             }
+
         }
+        return true;
     }
 }

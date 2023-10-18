@@ -172,5 +172,8 @@ public class Player extends Entity{
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.setColor(Color.RED); // You can choose any color you like
+        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }
 }
+
