@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this, keyH);
-    public ArrayList<OBJ_Key> keys = new ArrayList<>();
+    public ArrayList<SuperObject> obj = new ArrayList<>();
     //Display <=10 objects in the game
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
     }
     public void setupGame(){
-        aSetter.setObjectRandom();
+        aSetter.setKeyRandom();
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -124,9 +124,10 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2, 2, tileM.tile[2]);
 
         //object
-        for (OBJ_Key key: keys){
-            if (key!=null){ //Avoid nullpointer error
-                key.draw(g2,this);
+        for (int i = 0; i < obj.size(); i++){
+            SuperObject objIndex = obj.get(i);
+            if (objIndex!=null){ //Avoid nullpointer error
+                objIndex.draw(g2,this);
             }
         }
 

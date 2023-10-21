@@ -13,6 +13,7 @@ public class Player extends Entity{
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
+    int hasKey = 0;
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -21,6 +22,8 @@ public class Player extends Entity{
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         solidArea = new Rectangle(21,30, 24, 31 );
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         setDefaultValues();
         getPlayerImage();
@@ -79,6 +82,10 @@ public class Player extends Entity{
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
+            // CHECK OBJECT COLLISION
+            int objIndex = gp.cChecker.checkObject(this, true);
+            pickUpObject(objIndex);
+
             // IF COLLISION FALSE, CAN MOVE
             if(collisionOn == false){
                 switch (direction){
@@ -106,6 +113,26 @@ public class Player extends Entity{
             }
         }
 
+    }
+    public void pickUpObject(int i){
+        if(i != 999){
+            String objectName = gp.obj.get(i).name;
+
+            switch (objectName){
+                case "Key":
+                    hasKey++;
+                    gp.obj.set(i, null);
+                    System.out.println("Key:" + hasKey);
+                    break;
+                case "Door":
+                    if(hasKey > 0){
+                        gp.obj.set(i, null);
+                        hasKey--;
+                    }
+                    System.out.println("Key:" + hasKey);
+                    break;
+            }
+        }
     }
     public void draw(Graphics2D g2){
 //        g2.setColor(Color.white);
@@ -172,6 +199,8 @@ public class Player extends Entity{
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+        // SHOW COLLISION BOX FOR DEBUGGING
         g2.setColor(Color.RED); // You can choose any color you like
         g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }

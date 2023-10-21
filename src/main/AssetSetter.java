@@ -5,6 +5,7 @@ import object.OBJ_Door;
 import object.OBJ_Key;
 import java.util.Random;
 
+import object.SuperObject;
 import tile.TileImageLoader;
 import tile.TileManager;
 
@@ -44,7 +45,7 @@ public class AssetSetter {
         gp.obj[6].worldY = 7 * gp.tileSize;
     }
 */
-    public void setObjectRandom(){
+    public void setKeyRandom(){
         Random random = new Random();
         int numKeys = 20;
 
@@ -52,20 +53,23 @@ public class AssetSetter {
             int x = random.nextInt(gp.maxWorldCol);
             int y = random.nextInt(gp.maxWorldRow);
 
-            OBJ_Key newKey = new OBJ_Key();
+
+
+            SuperObject newKey = new OBJ_Key();
+
             newKey.worldX = x * gp.tileSize;
             newKey.worldY = y * gp.tileSize;
 
             boolean validKey = true;
-            for (OBJ_Key existingKey : gp.keys) {
-                if (newKey.distanceTo(existingKey) < 10) {
+            for (SuperObject existingKey : gp.obj) {
+                if (existingKey instanceof OBJ_Key && newKey.distanceTo(existingKey) < 10) {
                     validKey = false;
                     break;
                 }
             }
 
             if (validKey && isValidKeyPlacement(newKey)) {
-                gp.keys.add(newKey);
+                gp.obj.add(newKey);
                 System.out.println("Generated key at (" + x + ", " + y + ")");
             } else {
                 System.out.println("Invalid key. Regenerating...");
@@ -74,7 +78,7 @@ public class AssetSetter {
         }
     }
 
-    public boolean isValidKeyPlacement(OBJ_Key newKey){
+    public boolean isValidKeyPlacement(SuperObject newKey){
         for(int i=0;i< gp.tileM.layerNum; i++){
 
             int tileNum = gp.tileM.mapTileNum[i][newKey.worldX/gp.tileSize][newKey.worldY/gp.tileSize];
