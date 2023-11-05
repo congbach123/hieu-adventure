@@ -11,7 +11,7 @@ import tile.TileImageLoader;
 
 public class TileManager {
 
-    final public int layerNum = 3;
+    final public int layerNum = 8;
     GamePanel gp;
     public Tile[][] tile;
     public int[][][] mapTileNum;
@@ -47,16 +47,33 @@ public class TileManager {
 
         // READ TILE DATA FILE
 
-        tile = new Tile[layerNum][1400];
+        tile = new Tile[layerNum][17500];
 
-
+        /*
         TileImageLoader.getTileImage(tile[0], "/tiles/wall2");
         TileImageLoader.getTileImage(tile[1], "/tiles/wall2");
         TileImageLoader.getTileImage(tile[2], "/tiles/wall");
         MapDataReader.readMapData(tile[0], "/tiles/wall2/collision.txt");
         MapDataReader.readMapData(tile[1], "/tiles/wall2/collision.txt");
         MapDataReader.readMapData(tile[2], "/tiles/wall/collision.txt");
+        */
 
+        TileImageLoader.getTileImage(tile[0], "/tiles/Room");
+        TileImageLoader.getTileImage(tile[1], "/tiles/Room");
+        TileImageLoader.getTileImage(tile[2], "/tiles/Room");
+        TileImageLoader.getTileImage(tile[3], "/tiles/Room");
+        TileImageLoader.getTileImage(tile[4], "/tiles/Room");
+        TileImageLoader.getTileImage(tile[5], "/tiles/Interiors");
+        TileImageLoader.getTileImage(tile[6], "/tiles/Interiors");
+        TileImageLoader.getTileImage(tile[7], "/tiles/Interiors");
+        MapDataReader.readMapData(tile[0], "/tiles/Room/collision.txt");
+        MapDataReader.readMapData(tile[1], "/tiles/Room/collision.txt");
+        MapDataReader.readMapData(tile[2], "/tiles/Room/collision.txt");
+        MapDataReader.readMapData(tile[3], "/tiles/Room/collision.txt");
+        MapDataReader.readMapData(tile[4], "/tiles/Room/collision.txt");
+        MapDataReader.readMapData(tile[5], "/tiles/Interiors/collision.txt");
+        MapDataReader.readMapData(tile[6], "/tiles/Interiors/collision.txt");
+        MapDataReader.readMapData(tile[7], "/tiles/Interiors/collision.txt");
 
         /*
         getTileImage(tile[0], "/tiles/wall2");
@@ -69,9 +86,20 @@ public class TileManager {
 
         mapTileNum = new int[layerNum][gp.maxWorldCol][gp.maxWorldRow];
 
+        /* OLD LOAD MAP
         loadMap("/maps/map2_interior.txt", mapTileNum[0]);
         loadMap("/maps/map2_wall2.txt", mapTileNum[1]);
         loadMap("/maps/map2_wall.txt", mapTileNum[2]);
+
+         */
+        loadMap("/maps/layer2.9.txt", mapTileNum[0]);
+        loadMap("/maps/layer3.txt", mapTileNum[1]);
+        loadMap("/maps/layer4.txt", mapTileNum[2]);
+        loadMap("/maps/layer1.txt", mapTileNum[3]);
+        loadMap("/maps/layer2.txt", mapTileNum[4]);
+        loadMap("/maps/layer5.txt", mapTileNum[5]);
+        loadMap("/maps/layer5.2.txt", mapTileNum[6]);
+        loadMap("/maps/layer5.1.txt", mapTileNum[7]);
     }
 
     public void loadMap(String filePath, int[][] mapTileNum){

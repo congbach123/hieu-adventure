@@ -13,7 +13,7 @@ public class Player extends Entity{
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    int hasKey = 0;
+    public int hasKey = 0;
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -29,8 +29,8 @@ public class Player extends Entity{
         getPlayerImage();
     }
     public void setDefaultValues(){
-        worldX = gp.tileSize * 10;
-        worldY = gp.tileSize * 20;
+        worldX = gp.tileSize * 22;
+        worldY = gp.tileSize * 19;
         speed = 4;
         direction = "down";
     }
@@ -120,16 +120,46 @@ public class Player extends Entity{
 
             switch (objectName){
                 case "Key":
+                    gp.playSE(1);
                     hasKey++;
                     gp.obj.set(i, null);
-                    System.out.println("Key:" + hasKey);
+                    gp.ui.showMessage("Picked up a key!");
+                    //System.out.println("Key:" + hasKey);
                     break;
+                    /*
                 case "Door":
                     if(hasKey > 0){
                         gp.obj.set(i, null);
                         hasKey--;
+                        gp.ui.showMessage("Unlocked a door");
                     }
-                    System.out.println("Key:" + hasKey);
+                    //System.out.println("Key:" + hasKey);
+                    else{
+                        gp.ui.showMessage("You need a key");
+                    }
+                    break;
+
+                     */
+                case "Door":
+                    if(hasKey == gp.aSetter.numKeys){
+                        gp.ui.gameFinished = true;
+                        gp.stopMusic();
+                        gp.playSE(4);
+                    }
+                    else{
+                        gp.ui.showMessage("You don't have enough keys");
+                    }
+                    break;
+                case "Boots":
+                    gp.playSE(2);
+                    speed+=10;
+                    gp.obj.set(i, null);
+                    gp.ui.showMessage("Picked up a Speed Boots");
+                    break;
+                case "Chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(4);
                     break;
             }
         }

@@ -7,6 +7,11 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 
 public class SuperObject {
+    GamePanel gp;
+
+    public SuperObject(){
+        this.gp = gp;
+    }
     public BufferedImage image;
     public String name;
     public boolean collision = false;

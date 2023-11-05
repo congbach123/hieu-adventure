@@ -1,53 +1,45 @@
 package main;
 
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
+import object.*;
+
 import java.util.Random;
 
-import object.SuperObject;
 import tile.TileImageLoader;
 import tile.TileManager;
 
 public class AssetSetter {
     GamePanel gp;
+    public int numKeys = 5;
+    public int numBoots = 5;
     public AssetSetter(GamePanel gp){
         this.gp=gp;
     }
-    /*
-    public void setObject(){
-        gp.obj[0] = new OBJ_Key();
-        gp.obj[0].worldX = 23 * gp.tileSize;
-        gp.obj[0].worldY = 7 * gp.tileSize;
 
-        gp.obj[1] = new OBJ_Key();
-        gp.obj[1].worldX = 23*gp.tileSize;
-        gp.obj[1].worldY = 40 * gp.tileSize;
-
-        gp.obj[2] = new OBJ_Key();
-        gp.obj[2].worldX = 37*gp.tileSize;
-        gp.obj[2].worldY = 7 * gp.tileSize;
-
-        gp.obj[3] = new OBJ_Door();
-        gp.obj[3].worldX = 10*gp.tileSize;
-        gp.obj[3].worldY = 9 * gp.tileSize;
-
-        gp.obj[4] = new OBJ_Door();
-        gp.obj[4].worldX = 8*gp.tileSize;
-        gp.obj[4].worldY = 28 * gp.tileSize;
-
-        gp.obj[5] = new OBJ_Door();
-        gp.obj[5].worldX = 12*gp.tileSize;
-        gp.obj[5].worldY = 22* gp.tileSize;
-
-        gp.obj[6] = new OBJ_Chest();
-        gp.obj[6].worldX = 10*gp.tileSize;
-        gp.obj[6].worldY = 7 * gp.tileSize;
+    public void setChest(){
+        SuperObject newChest = new OBJ_Chest();
+        newChest.worldX = 20 * gp.tileSize;
+        newChest.worldY = 20 * gp.tileSize;
+        gp.obj.add(newChest);
     }
-*/
+
+    public void setDoor(){
+        SuperObject newDoor = new OBJ_Door();
+        newDoor.worldX = 22 * gp.tileSize;
+        newDoor.worldY = 6 * gp.tileSize;
+        gp.obj.add(newDoor);
+    }
+    public void setBoots(){
+
+
+       SuperObject newBoot = new OBJ_Boots();
+       newBoot.worldX = 10 * gp.tileSize;
+       newBoot.worldY = 10 * gp.tileSize;
+       gp.obj.add(newBoot);
+    }
+
     public void setKeyRandom(){
         Random random = new Random();
-        int numKeys = 20;
+
 
         for(int i=0; i<numKeys;i++){
             int x = random.nextInt(gp.maxWorldCol);
@@ -62,10 +54,14 @@ public class AssetSetter {
 
             boolean validKey = true;
             for (SuperObject existingKey : gp.obj) {
-                if (existingKey instanceof OBJ_Key && newKey.distanceTo(existingKey) < 10) {
-                    validKey = false;
-                    break;
+                if ((existingKey instanceof OBJ_Key && newKey.distanceTo(existingKey) < 10*gp.tileSize) ||
+                        (existingKey instanceof OBJ_Boots && newKey.distanceTo(existingKey) < 5)) {
+
+                        validKey = false;
+                        break;
+
                 }
+                //System.out.println("keydist: "+newKey.distanceTo(existingKey) );
             }
 
             if (validKey && isValidKeyPlacement(newKey)) {
@@ -79,17 +75,21 @@ public class AssetSetter {
     }
 
     public boolean isValidKeyPlacement(SuperObject newKey){
+        int voidCount = 0;
         for(int i=0;i< gp.tileM.layerNum; i++){
 
             int tileNum = gp.tileM.mapTileNum[i][newKey.worldX/gp.tileSize][newKey.worldY/gp.tileSize];
+
             // divine by tilesize to get x,y or col and row
             if(tileNum != -1){
                 if(gp.tileM.tile[i][tileNum].collision == true){
                     return false;
                 }
             }
+            else voidCount++;
 
         }
+        if(voidCount == gp.tileM.layerNum) return false; // CHECK IF THE KEY IS IN THE VOID
         return true;
     }
 }

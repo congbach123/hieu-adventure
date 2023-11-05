@@ -19,19 +19,26 @@ public class GamePanel extends JPanel implements Runnable{
     public final int screenWidth = tileSize * maxScreenCol; // 1024 px
     public final int screenHeight = tileSize * maxScreenRow; // 768 px
     // WORLD SETTING
-    public final int maxWorldCol = 100;
-    public final int maxWorldRow = 100;
+    public final int maxWorldCol = 45;
+    public final int maxWorldRow = 30;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
     // FPS
     int FPS = 60;
 
+    // SYSTEM
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
+    Sound music = new Sound();
+    Sound se = new Sound();
+
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+    Thread gameThread;
+
+    //  ENTITY AND OBJECT HERE
     public Player player = new Player(this, keyH);
     public ArrayList<SuperObject> obj = new ArrayList<>();
     //Display <=10 objects in the game
@@ -43,7 +50,12 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
     }
     public void setupGame(){
+        aSetter.setBoots();
+        aSetter.setChest();
+        aSetter.setDoor();
         aSetter.setKeyRandom();
+
+        playMusic(0); // play gamemusic
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -122,6 +134,11 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2, 0, tileM.tile[0]);
         tileM.draw(g2, 1, tileM.tile[1]);
         tileM.draw(g2, 2, tileM.tile[2]);
+        tileM.draw(g2, 3, tileM.tile[3]);
+        tileM.draw(g2, 4, tileM.tile[4]);
+        tileM.draw(g2, 5, tileM.tile[5]);
+        tileM.draw(g2, 6, tileM.tile[6]);
+        tileM.draw(g2, 7, tileM.tile[7]);
 
         //object
         for (int i = 0; i < obj.size(); i++){
@@ -131,7 +148,25 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
+        // PLAYER
         player.draw(g2);
+
+        // UI
+        ui.draw(g2);
+
         g2.dispose();
+    }
+
+    public void playMusic(int i){
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+    public void stopMusic(){
+        music.stop();
+    }
+    public void playSE(int i){
+        se.setFile(i);
+        se.play();
     }
 }

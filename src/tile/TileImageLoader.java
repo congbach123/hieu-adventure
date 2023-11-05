@@ -27,7 +27,7 @@ public class TileImageLoader {
            // System.out.println(files.length);
             for (int i = 0; i < files.length-1; i++) {
                 tile[i] = new Tile();
-                String imagePath = folderPath + "/tile" + String.format("%03d", i) + ".png";
+                String imagePath = folderPath + "/tile" + String.format("%05d", i) + ".png";
                 InputStream stream = TileImageLoader.class.getResourceAsStream(imagePath);
                 if (stream != null) {
                     tile[i].image = ImageIO.read(stream);
