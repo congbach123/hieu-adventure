@@ -17,8 +17,8 @@ public class AssetSetter {
 
     public void setChest(){
         SuperObject newChest = new OBJ_Chest();
-        newChest.worldX = 20 * gp.tileSize;
-        newChest.worldY = 20 * gp.tileSize;
+        newChest.worldX = 7 * gp.tileSize;
+        newChest.worldY = 15 * gp.tileSize;
         gp.obj.add(newChest);
     }
 

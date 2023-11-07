@@ -16,6 +16,7 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
+    public boolean loseCondition = false;
 
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#");
@@ -50,7 +51,12 @@ public class UI {
             int textLength;
             int x,y;
 
-            text = "You escaped after " + dFormat.format(playTime) + " seconds!";
+            if(loseCondition){
+                text = "You did not escape in time";
+            }
+            else {
+                text = "You escaped after " + dFormat.format(playTime) + " seconds!";
+            }
             textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
             x = gp.screenWidth / 2 - textLength/2;
@@ -76,7 +82,12 @@ public class UI {
 
             g2.setFont(futura_80B);
 
-            text = "GAME OVER";
+            if(loseCondition){
+                text = "GAME OVER";
+            }
+            else {
+                text = "ESCAPED";
+            }
             textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
             x = gp.screenWidth / 2 - textLength/2;
             y = gp.screenHeight / 2 - gp.tileSize;
@@ -111,6 +122,12 @@ public class UI {
             g2.drawString("Key = " + gp.player.hasKey, 112, 80);
 
             playTime +=(double) 1/60;
+
+            // LOSE SCREEN
+            if(playTime >= 60 && gameFinished!=true){
+                gameFinished = true;
+                loseCondition = true;
+            }
 
             g2.setColor(colorBorder);
             for (int i = -2; i <= 2; i++) {

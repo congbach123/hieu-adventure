@@ -24,6 +24,9 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
+    // Easter
+    public boolean easter = false;
+
     // FPS
     int FPS = 60;
 
@@ -132,13 +135,16 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         //tile
         tileM.draw(g2, 0, tileM.tile[0]);
-        tileM.draw(g2, 1, tileM.tile[1]);
+        if(easter){
+            tileM.draw(g2, 1, tileM.tile[1]); //EasterEgg
+        }
         tileM.draw(g2, 2, tileM.tile[2]);
         tileM.draw(g2, 3, tileM.tile[3]);
         tileM.draw(g2, 4, tileM.tile[4]);
         tileM.draw(g2, 5, tileM.tile[5]);
         tileM.draw(g2, 6, tileM.tile[6]);
         tileM.draw(g2, 7, tileM.tile[7]);
+        tileM.draw(g2, 8, tileM.tile[8]);
 
         //object
         for (int i = 0; i < obj.size(); i++){
