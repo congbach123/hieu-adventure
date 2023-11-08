@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     // SYSTEM
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
 
@@ -44,7 +44,12 @@ public class GamePanel extends JPanel implements Runnable{
     //  ENTITY AND OBJECT HERE
     public Player player = new Player(this, keyH);
     public ArrayList<SuperObject> obj = new ArrayList<>();
-    //Display <=10 objects in the game
+
+    // GAME STATE
+    public int gameState;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int pauseState = 2;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -58,7 +63,9 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setDoor();
         aSetter.setKeyRandom();
 
-        playMusic(0); // play gamemusic
+        //playMusic(0); // play gamemusic
+
+        gameState = titleState;
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -127,38 +134,53 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void update(){
-        player.update();
+
+        if(gameState == playState){
+            player.update();
+        }
+        if(gameState == pauseState){
+            //nothing
+        }
+
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        //tile
-        tileM.draw(g2, 0, tileM.tile[0]);
-        if(easter){
-            tileM.draw(g2, 1, tileM.tile[1]); //EasterEgg
-        }
-        tileM.draw(g2, 2, tileM.tile[2]);
-        tileM.draw(g2, 3, tileM.tile[3]);
-        tileM.draw(g2, 4, tileM.tile[4]);
-        tileM.draw(g2, 5, tileM.tile[5]);
-        tileM.draw(g2, 6, tileM.tile[6]);
-        tileM.draw(g2, 7, tileM.tile[7]);
-        tileM.draw(g2, 8, tileM.tile[8]);
 
-        //object
-        for (int i = 0; i < obj.size(); i++){
-            SuperObject objIndex = obj.get(i);
-            if (objIndex!=null){ //Avoid nullpointer error
-                objIndex.draw(g2,this);
+        // TITLE SCREEN
+        if(gameState == titleState){
+            ui.draw(g2);
+        }
+        //OTHER
+        else {
+// TILE
+            tileM.draw(g2, 0, tileM.tile[0]);
+            if(easter){
+                tileM.draw(g2, 1, tileM.tile[1]); //EasterEgg
             }
+            tileM.draw(g2, 2, tileM.tile[2]);
+            tileM.draw(g2, 3, tileM.tile[3]);
+            tileM.draw(g2, 4, tileM.tile[4]);
+            tileM.draw(g2, 5, tileM.tile[5]);
+            tileM.draw(g2, 6, tileM.tile[6]);
+            tileM.draw(g2, 7, tileM.tile[7]);
+            tileM.draw(g2, 8, tileM.tile[8]);
+
+            // OBJECT
+            for (int i = 0; i < obj.size(); i++){
+                SuperObject objIndex = obj.get(i);
+                if (objIndex!=null){ //Avoid nullpointer error
+                    objIndex.draw(g2,this);
+                }
+            }
+
+            // PLAYER
+            player.draw(g2);
+
+            // UI
+            ui.draw(g2);
         }
-
-        // PLAYER
-        player.draw(g2);
-
-        // UI
-        ui.draw(g2);
 
         g2.dispose();
     }
