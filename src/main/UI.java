@@ -75,67 +75,7 @@ public class UI {
         // PLAY STATE
         if(gp.gameState == gp.playState){
             if(gameFinished){
-
-                g2.setFont(futura_40);
-
-                String text;
-                int textLength;
-                int x,y;
-
-                if(loseCondition){
-                    text = "You did not escape in time";
-                }
-                else {
-                    text = "You escaped after " + dFormat.format(playTime) + " seconds!";
-                }
-
-                x = getXforCenteredText(text);
-                y = gp.screenHeight / 2 - (gp.tileSize*3);
-
-                g2.setColor(colorBorder);
-                for (int i = -2; i <= 2; i++) {
-                    for (int j = -2; j <= 2; j++) {
-                        if (i != 0 || j != 0) {
-                            g2.drawString(text, x + i, y + j);
-                        }
-                    }
-                }
-
-                g2.setColor(colorBase);
-                g2.drawString(text,x,y);
-
-//            text = "You took "+ dFormat.format(playTime) + " seconds to escape.";
-//            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//
-//            x = gp.screenWidth / 2 - textLength/2;
-//            y = gp.screenHeight / 2 - (gp.tileSize*4);
-//            g2.drawString(text,x,y);
-
-                g2.setFont(futura_80B);
-
-                if(loseCondition){
-                    text = "GAME OVER";
-                }
-                else {
-                    text = "ESCAPED";
-                }
-
-                x = getXforCenteredText(text);
-                y = gp.screenHeight / 2 - gp.tileSize;
-
-                g2.setColor(colorBorder);
-                for (int i = -2; i <= 2; i++) {
-                    for (int j = -2; j <= 2; j++) {
-                        if (i != 0 || j != 0) {
-                            g2.drawString(text, x + i, y + j);
-                        }
-                    }
-                }
-
-                g2.setColor(colorSpecial);
-                g2.drawString(text,x,y);
-
-                gp.gameThread = null;
+                gp.gameState = gp.gameOverState;
             }
             else {
                 g2.setFont(futura_40);
@@ -157,7 +97,7 @@ public class UI {
 
                 playTime +=(double) 1/60;
 
-                // LOSE SCREEN
+                // LOSE CONDITION
                 if(playTime >= 60 && gameFinished!=true){
                     gameFinished = true;
                     loseCondition = true;
@@ -207,6 +147,9 @@ public class UI {
         // PAUSE STATE
         if(gp.gameState == gp.pauseState){
             drawPauseScreen();
+        }
+        if(gp.gameState == gp.gameOverState){
+            drawGameOverScreen();
         }
 
     }
@@ -309,6 +252,111 @@ public class UI {
 
         g2.setColor(colorSpecial);
         g2.drawString(text,x,y);
+    }
+
+    public void drawGameOverScreen(){
+
+        g2.setFont(futura_40);
+
+        String text;
+        int textLength;
+        int x,y;
+
+        if(loseCondition){
+            text = "You did not escape in time";
+        }
+        else {
+            text = "You escaped after " + dFormat.format(playTime) + " seconds!";
+        }
+
+        x = getXforCenteredText(text);
+        y = gp.screenHeight / 2 - (gp.tileSize*3);
+
+        g2.setColor(colorBorder);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+
+        g2.setColor(colorBase);
+        g2.drawString(text,x,y);
+
+//            text = "You took "+ dFormat.format(playTime) + " seconds to escape.";
+//            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+//
+//            x = gp.screenWidth / 2 - textLength/2;
+//            y = gp.screenHeight / 2 - (gp.tileSize*4);
+//            g2.drawString(text,x,y);
+
+        g2.setFont(futura_80B);
+
+        if(loseCondition){
+            text = "GAME OVER";
+        }
+        else {
+            text = "ESCAPED";
+        }
+
+        x = getXforCenteredText(text);
+        y = gp.screenHeight / 2 - gp.tileSize;
+
+        g2.setColor(colorBorder);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+
+        g2.setColor(colorSpecial);
+        g2.drawString(text,x,y);
+        // end option
+        g2.setFont(JosefinSans_40);
+        text = "MAIN MENU";
+        x = getXforCenteredText(text);
+        y += gp.tileSize*2;
+
+        g2.setColor(colorBorder2);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+        g2.setColor(colorTitle2);
+        g2.drawString(text, x, y);
+        if(commandNum == 0){
+            g2.setColor(colorTitle3);
+            g2.drawString(text, x, y);
+        }
+
+        g2.setFont(JosefinSans_40);
+        text = "EXIT";
+        x = getXforCenteredText(text);
+        y += gp.tileSize;
+
+        g2.setColor(colorBorder2);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+        g2.setColor(colorTitle2);
+        g2.drawString(text, x, y);
+        if(commandNum == 1){
+            g2.setColor(colorTitle3);
+            g2.drawString(text, x, y);
+        }
+
+
+        //gp.gameThread = null;
     }
 
     public int getXforCenteredText(String text){

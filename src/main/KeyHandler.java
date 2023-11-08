@@ -45,7 +45,8 @@ public class KeyHandler implements KeyListener {
         }
 
         // PLAYING STATE
-        if(gp.gameState == gp.playState){
+        else if(gp.gameState == gp.playState){
+            System.out.println(gp.gameState);
             if(code == KeyEvent.VK_W){
                 upPressed = true;
             }
@@ -57,6 +58,8 @@ public class KeyHandler implements KeyListener {
             }
             if(code == KeyEvent.VK_D){
                 rightPressed = true;
+
+                // gp.gameState = gp.gameOverState;
             }
             if(code == KeyEvent.VK_P){
                 gp.gameState = gp.pauseState;
@@ -64,9 +67,32 @@ public class KeyHandler implements KeyListener {
         }
 
         // PAUSE STATE
-        if(gp.gameState == gp.pauseState){
+        else if(gp.gameState == gp.pauseState){
             if(code == KeyEvent.VK_P){
                 gp.gameState = gp.playState;
+            }
+        }
+        // GAMEOVER STATE
+        else if(gp.gameState == gp.gameOverState){
+            if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP){
+                if(gp.ui.commandNum > 0){
+                    gp.ui.commandNum--;
+                }
+            }
+            if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN){
+                if(gp.ui.commandNum < 1){
+                    gp.ui.commandNum++;
+                }
+            }
+            if(code == KeyEvent.VK_ENTER){
+                if(gp.ui.commandNum == 0){
+                    gp.restart();
+                    //gp.gameState = gp.playState;
+                    //gp.playMusic(0);
+                }
+                if(gp.ui.commandNum == 1){
+                    System.exit(0);
+                }
             }
         }
     }

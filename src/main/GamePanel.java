@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int gameOverState = 3;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -66,6 +67,17 @@ public class GamePanel extends JPanel implements Runnable{
         //playMusic(0); // play gamemusic
 
         gameState = titleState;
+    }
+    public void restart(){
+        stopMusic();
+        player.setDefaultValues();
+        ui.gameFinished = false;
+        ui.loseCondition = false;
+        ui.playTime = 0;
+        player.hasKey = 0;
+        obj.clear();
+        easter = false;
+        setupGame();
     }
     public void startGameThread(){
         gameThread = new Thread(this);
