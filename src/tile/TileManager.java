@@ -17,30 +17,6 @@ public class TileManager {
     public int[][][] mapTileNum;
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
-    /*
-    public Tile[] getTileForWall() {
-        return tileForWall;
-    }
-    public Tile[] getTileForWall2() {
-        return tileForWall2;
-    }
-
-    public Tile[] getTileForInterior() {
-        return tileForInterior;
-    }
-
-    public int[][] getMapTileNumWall() {
-        return mapTileNumWall;
-    }
-
-    public int[][] getMapTileNumWall2() {
-        return mapTileNumWall2;
-    }
-
-    public int[][] getMapTileNumInterior() {
-        return mapTileNumInterior;
-    }
-    */
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -145,6 +121,7 @@ public class TileManager {
                 int screenX = worldX - gp.player.worldX + gp.player.screenX;
                 int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
+                // DRAW IN SCREEN
                 if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
                         worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                         worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&

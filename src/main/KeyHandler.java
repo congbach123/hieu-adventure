@@ -34,11 +34,20 @@ public class KeyHandler implements KeyListener {
                 }
             }
             if(code == KeyEvent.VK_ENTER){
-                if(gp.ui.commandNum == 0){
+                if(gp.ui.commandNum == 0 && gp.ui.difficultyOpt == false){
+                    gp.ui.difficultyOpt = true;
+                }
+                else if(gp.ui.commandNum == 0 && gp.ui.difficultyOpt == true){
+                    gp.gameDifficulty = gp.NormalDiff;
                     gp.gameState = gp.playState;
                     gp.playMusic(0);
                 }
-                if(gp.ui.commandNum == 1){
+                else if(gp.ui.commandNum == 1 && gp.ui.difficultyOpt == true){
+                    gp.gameDifficulty = gp.HardDiff;
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+                }
+                else if(gp.ui.commandNum == 1){
                     System.exit(0);
                 }
             }

@@ -10,7 +10,7 @@ import tile.TileManager;
 public class AssetSetter {
     GamePanel gp;
     public int numKeys = 5;
-    public int numBoots = 5;
+    //public int numBoots = 5;
     public AssetSetter(GamePanel gp){
         this.gp=gp;
     }
@@ -42,6 +42,7 @@ public class AssetSetter {
 
 
         for(int i=0; i<numKeys;i++){
+
             int x = random.nextInt(gp.maxWorldCol);
             int y = random.nextInt(gp.maxWorldRow);
 
@@ -53,9 +54,10 @@ public class AssetSetter {
             newKey.worldY = y * gp.tileSize;
 
             boolean validKey = true;
+
             for (SuperObject existingKey : gp.obj) {
                 if ((existingKey instanceof OBJ_Key && newKey.distanceTo(existingKey) < 10*gp.tileSize) ||
-                        (existingKey instanceof OBJ_Boots && newKey.distanceTo(existingKey) < 5)) {
+                        (existingKey instanceof OBJ_Boots && newKey.distanceTo(existingKey) < 5*gp.tileSize)) {
 
                         validKey = false;
                         break;

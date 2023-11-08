@@ -23,9 +23,10 @@ public class UI {
     public boolean loseCondition = false;
     public int commandNum = 0;
 
+    public boolean difficultyOpt = false;
+
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#");
-
     public Color colorBase = new Color(0xBDD2B6);
     public Color colorBorder = new Color(0x2C3639);
     public Color colorBorder2 = new Color(0x213555);
@@ -41,6 +42,7 @@ public class UI {
         arial_80B = new Font("Arial", Font.BOLD, 80);
         */
         try {
+
             InputStream is = getClass().getResourceAsStream("/font/PixelifySans-VariableFont_wght.ttf");
             pixelSans_100B = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, 100f);
             is = getClass().getResourceAsStream("/font/JosefinSans-SemiBold.ttf");
@@ -98,10 +100,19 @@ public class UI {
                 playTime +=(double) 1/60;
 
                 // LOSE CONDITION
-                if(playTime >= 60 && gameFinished!=true){
-                    gameFinished = true;
-                    loseCondition = true;
+                if(gp.gameDifficulty == gp.NormalDiff){
+                    if(playTime >= gp.NormalDiff && gameFinished != true){
+                        gameFinished = true;
+                        loseCondition = true;
+                    }
                 }
+                else if(gp.gameDifficulty == gp.HardDiff){
+                    if(playTime >= gp.HardDiff && gameFinished!=true ){
+                        gameFinished = true;
+                        loseCondition = true;
+                    }
+                }
+
 
                 // TIME DISPLAY
                 g2.setColor(colorBorder);
@@ -114,6 +125,25 @@ public class UI {
                 }
                 g2.setColor(colorBase);
                 g2.drawString("Time: " + dFormat.format(playTime), gp.tileSize*11, 80);
+
+                // SHOW OBJECTIVE
+                if(playTime <= 5){
+                    g2.setFont(futura_40);
+                    String text = "Collect 5 keys in " + gp.gameDifficulty + " seconds to escape the hotel.";
+                    int x = getXforCenteredText(text);
+                    int y = gp.screenHeight / 2 - (gp.tileSize*2);
+                    g2.setColor(colorBorder);
+                    for (int i = -2; i <= 2; i++) {
+                        for (int j = -2; j <= 2; j++) {
+                            if (i != 0 || j != 0) {
+                                g2.drawString(text,x + i, y + j);
+                            }
+                        }
+                    }
+                    g2.setColor(colorTitle3);
+                    g2.drawString(text, x, y);
+                }
+
                 //MESSAGE
                 if(messageOn == true){
                     g2.setFont(g2.getFont().deriveFont(30f));
@@ -155,7 +185,6 @@ public class UI {
     }
 
     public void drawTitleScreen(){
-
         BufferedImage backgroundImage = null;
         try {
             InputStream is = getClass().getResourceAsStream("/title/title.png");
@@ -194,7 +223,9 @@ public class UI {
 
         // MENU
         g2.setFont(JosefinSans_40);
+
         text = "NEW GAME";
+        if(difficultyOpt) text = "NORMAL";
         x = getXforCenteredText(text);
         y += gp.tileSize*6;
 
@@ -215,6 +246,7 @@ public class UI {
 
         g2.setFont(JosefinSans_40);
         text = "EXIT";
+        if(difficultyOpt) text = "HARD";
         x = getXforCenteredText(text);
         y += gp.tileSize;
 

@@ -232,9 +232,9 @@ public class Player extends Entity{
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
-        // SHOW COLLISION BOX FOR DEBUGGING
-        g2.setColor(Color.RED); // You can choose any color you like
-        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+//        // SHOW COLLISION BOX FOR DEBUGGING
+//        g2.setColor(Color.RED); // You can choose any color you like
+//        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }
 }
 

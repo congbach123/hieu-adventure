@@ -21,8 +21,8 @@ public class GamePanel extends JPanel implements Runnable{
     // WORLD SETTING
     public final int maxWorldCol = 45;
     public final int maxWorldRow = 30;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
+//    public final int worldWidth = tileSize * maxWorldCol;
+//    public final int worldHeight = tileSize * maxWorldRow;
 
     // Easter
     public boolean easter = false;
@@ -51,6 +51,10 @@ public class GamePanel extends JPanel implements Runnable{
     public final int playState = 1;
     public final int pauseState = 2;
     public final int gameOverState = 3;
+    public final int NormalDiff = 90, HardDiff = 60;
+    public int gameDifficulty = NormalDiff;
+
+    ;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -70,6 +74,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void restart(){
         stopMusic();
+        gameDifficulty = NormalDiff;
+        ui.difficultyOpt = false;
         player.setDefaultValues();
         ui.gameFinished = false;
         ui.loseCondition = false;
@@ -137,6 +143,7 @@ public class GamePanel extends JPanel implements Runnable{
                 delta--;
                 drawCount++;
             }
+            // SHOW FPS
             if(timer >= 1000000000){ // Every second print a fps count
                 System.out.println("FPS: " + drawCount);
                 drawCount =0;
@@ -182,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable{
             // OBJECT
             for (int i = 0; i < obj.size(); i++){
                 SuperObject objIndex = obj.get(i);
-                if (objIndex!=null){ //Avoid nullpointer error
+                if(objIndex!=null){ //Avoid nullpointer error
                     objIndex.draw(g2,this);
                 }
             }
