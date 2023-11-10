@@ -38,11 +38,13 @@ public class KeyHandler implements KeyListener {
                     gp.ui.difficultyOpt = true;
                 }
                 else if(gp.ui.commandNum == 0 && gp.ui.difficultyOpt == true){
+                    gp.stopMusic();
                     gp.gameDifficulty = gp.NormalDiff;
                     gp.gameState = gp.playState;
                     gp.playMusic(0);
                 }
                 else if(gp.ui.commandNum == 1 && gp.ui.difficultyOpt == true){
+                    gp.stopMusic();
                     gp.gameDifficulty = gp.HardDiff;
                     gp.gameState = gp.playState;
                     gp.playMusic(0);

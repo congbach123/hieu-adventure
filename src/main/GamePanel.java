@@ -69,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setKeyRandom();
 
         //playMusic(0); // play gamemusic
-
+        playMusic(5);
         gameState = titleState;
     }
     public void restart(){
@@ -129,6 +129,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 
 
+
         while(gameThread != null){
 
             currentTime = System.nanoTime();
@@ -143,10 +144,12 @@ public class GamePanel extends JPanel implements Runnable{
                 delta--;
                 drawCount++;
             }
-            // SHOW FPS
+            // SHOW FPS ON CONSOLE
             if(timer >= 1000000000){ // Every second print a fps count
                 System.out.println("FPS: " + drawCount);
+                ui.getFPS(drawCount);
                 drawCount =0;
+
                 timer =0;
             }
 

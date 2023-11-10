@@ -157,6 +157,7 @@ public class Player extends Entity{
                     gp.ui.showMessage("Picked up a Speed Boots");
                     break;
                 case "Chest":
+                    gp.playSE(6);
                     gp.easter = true;
                     gp.obj.set(i, null);
 //                    gp.ui.gameFinished = true;

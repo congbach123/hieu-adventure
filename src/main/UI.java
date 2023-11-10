@@ -14,7 +14,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font arial_40, arial_80B, futura_40, futura_80B, pixelSans_100B, pixelSans_40, JosefinSans_40;
+    Font arial_40, arial_80B, futura_20, futura_40, futura_80B, pixelSans_100B, pixelSans_40, JosefinSans_40;
     BufferedImage keyImage;
     public boolean messageOn = false;
     public String message = "";
@@ -26,6 +26,7 @@ public class UI {
     public boolean difficultyOpt = false;
 
     double playTime;
+    int fps;
     DecimalFormat dFormat = new DecimalFormat("#");
     public Color colorBase = new Color(0xBDD2B6);
     public Color colorBorder = new Color(0x2C3639);
@@ -55,6 +56,7 @@ public class UI {
         catch (IOException e){
             e.printStackTrace();
         }
+        futura_20 = new Font("futura", Font.PLAIN, 20);
         futura_40 = new Font("futura", Font.PLAIN, 40);
         futura_80B = new Font("futura", Font.BOLD, 80);
         OBJ_Key key = new OBJ_Key();
@@ -76,6 +78,7 @@ public class UI {
 
         // PLAY STATE
         if(gp.gameState == gp.playState){
+            showFPS();
             if(gameFinished){
                 gp.gameState = gp.gameOverState;
             }
@@ -119,12 +122,12 @@ public class UI {
                 for (int i = -2; i <= 2; i++) {
                     for (int j = -2; j <= 2; j++) {
                         if (i != 0 || j != 0) {
-                            g2.drawString("Time: " + dFormat.format(playTime), gp.tileSize*11 + i, 80 + j);
+                            g2.drawString("Time: " + dFormat.format(playTime) + "s", gp.tileSize*11 + i, 80 + j);
                         }
                     }
                 }
                 g2.setColor(colorBase);
-                g2.drawString("Time: " + dFormat.format(playTime), gp.tileSize*11, 80);
+                g2.drawString("Time: " + dFormat.format(playTime) + "s", gp.tileSize*11, 80);
 
                 // SHOW OBJECTIVE
                 if(playTime <= 5){
@@ -176,9 +179,11 @@ public class UI {
         }
         // PAUSE STATE
         if(gp.gameState == gp.pauseState){
+            showFPS();
             drawPauseScreen();
         }
         if(gp.gameState == gp.gameOverState){
+            showFPS();
             drawGameOverScreen();
         }
 
@@ -395,5 +400,26 @@ public class UI {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - textLength/2;
         return x;
+    }
+
+    public void getFPS(int fps){
+        this.fps = fps;
+    }
+    public void showFPS(){
+        g2.setFont(futura_20);
+        g2.setColor(colorBase);
+        //CREATE BORDER AROUND TEXT, DISPLAY KEY
+        String text = "FPS: " + fps;
+        g2.setColor(colorBorder);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, gp.tileSize * 14 + 50 + i, 20 + j);
+                }
+            }
+        }
+
+        g2.setColor(colorBase);
+        g2.drawString(text, gp.tileSize * 14 + 50, 20);
     }
 }
