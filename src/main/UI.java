@@ -289,6 +289,47 @@ public class UI {
 
         g2.setColor(colorSpecial);
         g2.drawString(text,x,y);
+
+        // OPTION
+        g2.setFont(JosefinSans_40);
+        text = "MAIN MENU";
+        x = getXforCenteredText(text);
+        y += gp.tileSize*2;
+
+        g2.setColor(colorBorder2);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+        g2.setColor(colorTitle2);
+        g2.drawString(text, x, y);
+        if(commandNum == 0){
+            g2.setColor(colorTitle3);
+            g2.drawString(text, x, y);
+        }
+
+        g2.setFont(JosefinSans_40);
+        text = "EXIT";
+        x = getXforCenteredText(text);
+        y += gp.tileSize;
+
+        g2.setColor(colorBorder2);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (i != 0 || j != 0) {
+                    g2.drawString(text, x + i, y + j);
+                }
+            }
+        }
+        g2.setColor(colorTitle2);
+        g2.drawString(text, x, y);
+        if(commandNum == 1){
+            g2.setColor(colorTitle3);
+            g2.drawString(text, x, y);
+        }
     }
 
     public void drawGameOverScreen(){
