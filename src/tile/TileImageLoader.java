@@ -19,7 +19,7 @@ public class TileImageLoader {
     public static void getTileImage(Tile[] tile, String folderPath){
 
         try {
-          //  System.out.println("/res"+folderPath);
+
             File f = new File("res"+ folderPath);
             String[] files = f.list();
 
